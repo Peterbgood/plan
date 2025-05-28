@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Item and Context Table</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(90deg, #4f46e5, #3b82f6);
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    main {
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    table {
+      width: 90%;
+      max-width: 900px;
+      border-collapse: collapse;
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background-color: #f3f4f6;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    tr:hover {
+      background-color: #f9fafb;
+    }
+
+    td[contenteditable="true"] {
+      cursor: text;
+      background-color: #f8fafc;
+    }
+
+    td[contenteditable="true"]:focus {
+      outline: 2px solid #4f46e5;
+      background-color: #fff;
+    }
+
+    button {
+      margin: 1rem 0;
+      padding: 0.75rem 1.5rem;
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #3b82f6;
+    }
+
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      th {
+        display: none;
+      }
+
+      td {
+        position: relative;
+        padding-left: 50%;
+        border: none;
+        border-bottom: 1px solid #eee;
+      }
+
+      td::before {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        width: 45%;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #6b7280;
+      }
+
+      td:nth-of-type(1)::before { content: "Item"; }
+      td:nth-of-type(2)::before { content: "Context"; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Item and Context Table</h1>
+  </header>
+  <main>
+    <button onclick="addRow()">Add New Row</button>
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Context</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td contenteditable="true">1. PAW</td><td contenteditable="true">Office</td></tr>
+        <tr><td contenteditable="true">2. Project</td><td contenteditable="true">Finding a project</td></tr>
+        <tr><td contenteditable="true">3. Pick-up sport</td><td contenteditable="true">Moving, working with Trish</td></tr>
+        <tr><td contenteditable="true">4. Positive visualization</td><td contenteditable="true">Free time</td></tr>
+        <tr><td contenteditable="true">5. Drinking</td><td contenteditable="true">Fridays, Sat, Sun. Corona extra</td></tr>
+        <tr><td contenteditable="true">6. Meeting New people</td><td contenteditable="true">Office</td></tr>
+        <tr><td contenteditable="true">7. Chatting with mates</td><td contenteditable="true">Office</td></tr>
+        <tr><td contenteditable="true">8. Praise</td><td contenteditable="true">Working hard</td></tr>
+        <tr><td contenteditable="true">9. S</td><td contenteditable="true">Wait</td></tr>
+        <tr><td contenteditable="true">10. Researching stuff</td><td contenteditable="true">Take notes</td></tr>
+        <tr><td contenteditable="true">11. Hard Work (Flow)</td><td contenteditable="true">Real trouble shooting</td></tr>
+        <tr><td contenteditable="true">12. Growth</td><td contenteditable="true">Building stuff</td></tr>
+        <tr><td contenteditable="true">13. Problem Solving</td><td contenteditable="true">Work</td></tr>
+        <tr><td contenteditable="true">14. Completing a task</td><td contenteditable="true">Work</td></tr>
+        <tr><td contenteditable="true">15. 150 pounds</td><td contenteditable="true">Diet</td></tr>
+        <tr><td contenteditable="true">16. Limit and reward</td><td contenteditable="true">Awareness</td></tr>
+      </tbody>
+    </table>
+  </main>
+  <script>
+    const table = document.getElementById('dataTable');
+    const tbody = table.querySelector('tbody');
+
+    // Load data from local storage on page load
+    function loadTableData() {
+      const savedData = localStorage.getItem('tableData');
+      if (savedData) {
+        const data = JSON.parse(savedData);
+        tbody.innerHTML = '';
+        data.forEach((row, index) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td contenteditable="true">${index + 1}. ${row.item}</td>
+            <td contenteditable="true">${row.context}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
+
+    // Save data to local storage
+    function saveTableData() {
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      const data = rows.map((row, index) => {
+        const cells = row.querySelectorAll('td');
+        const itemText = cells[0].textContent.replace(/^\d+\.\s*/, ''); // Remove number prefix
+        return {
+          item: itemText,
+          context: cells[1].textContent
+        };
+      });
+      localStorage.setItem('tableData', JSON.stringify(data));
+    }
+
+    // Add new row
+    function addRow() {
+      const rows = tbody.querySelectorAll('tr');
+      const newRowNumber = rows.length + 1;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td contenteditable="true">${newRowNumber}. New Item</td>
+        <td contenteditable="true">Enter context</td>
+      `;
+      tbody.appendChild(tr);
+      saveTableData();
+    }
+
+    // Save changes on input
+    tbody.addEventListener('input', (e) => {
+      if (e.target.tagName === 'TD' && e.target.isContentEditable) {
+        saveTableData();
+      }
+    });
+
+    // Load saved data on page load
+    window.addEventListener('load', loadTableData);
+  </script>
+</body>
+</html>
