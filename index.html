@@ -180,6 +180,26 @@
     let touchTarget = null;
     let lastTapTime = 0;
 
+    // Default table data
+    const defaultData = [
+      { want: "PAW", plan: "Office", barriers: "Time constraints" },
+      { want: "Project", plan: "Finding a project", barriers: "Lack of resources" },
+      { want: "Pickup Sport", plan: "Move w/ Trish", barriers: "Scheduling conflicts" },
+      { want: "Pos. Visualization", plan: "Free time", barriers: "Distractions" },
+      { want: "Drinking", plan: "Weekends, Corona", barriers: "Health concerns" },
+      { want: "Meet People", plan: "Office", barriers: "Shyness" },
+      { want: "Chat with Mates", plan: "Office", barriers: "Busy schedules" },
+      { want: "Praise", plan: "Working hard", barriers: "Lack of feedback" },
+      { want: "S", plan: "Wait", barriers: "Uncertainty" },
+      { want: "Research", plan: "Take notes", barriers: "Information overload" },
+      { want: "Flow Work", plan: "Troubleshooting", barriers: "Technical issues" },
+      { want: "Growth", plan: "Build Stuff", barriers: "Skill gaps" },
+      { want: "Problem Solve", plan: "Work", barriers: "Complexity" },
+      { want: "Complete Task", plan: "Work", barriers: "Interruptions" },
+      { want: "150 pounds", plan: "Diet", barriers: "Cravings" },
+      { want: "Limit and reward", plan: "Awareness", barriers: "Lack of discipline" }
+    ];
+
     // Load data from local storage on page load
     function loadTableData() {
       const savedData = localStorage.getItem('tableData');
@@ -195,6 +215,8 @@
           `;
           tbody.appendChild(tr);
         });
+      } else {
+        resetTable(); // Load default data if no saved data
       }
     }
 
@@ -242,11 +264,20 @@
       saveTableData();
     }
 
-    // Reset table
+    // Reset table to default placeholders
     function resetTable() {
-      if (confirm('Are you sure you want to reset the table? This will delete all data.')) {
+      if (confirm('Are you sure you want to reset the table to default placeholders?')) {
         tbody.innerHTML = '';
-        localStorage.removeItem('tableData');
+        defaultData.forEach((row) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td contenteditable="true">${row.want}</td>
+            <td contenteditable="true">${row.plan}</td>
+            <td contenteditable="true">${row.barriers}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+        localStorage.setItem('tableData', JSON.stringify(defaultData));
       }
     }
 
@@ -261,7 +292,6 @@
 
     // Handle double-tap and long press on mobile
     tbody.addEventListener('touchend', (e) => {
-      e.preventDefault(); // Prevent default touch behavior
       const row = e.target.closest('tr');
       if (!row) return;
 
@@ -269,8 +299,10 @@
       const timeSinceLastTap = currentTime - lastTapTime;
 
       if (timeSinceLastTap < 300 && timeSinceLastTap > 0) { // Double-tap: <300ms
+        e.preventDefault(); // Prevent zoom on double-tap
         moveRowUp(row);
       } else if (currentTime - touchStartTime > 500) { // Long press: >500ms
+        e.preventDefault(); // Prevent text selection
         deleteRow(row);
       }
 
@@ -280,7 +312,6 @@
     });
 
     tbody.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // Prevent zoom on touch
       touchStartTime = Date.now();
       touchTarget = e.target.closest('tr');
     });
