@@ -42,9 +42,10 @@
       min-width: 90px;
       max-width: 120px;
     }
-    .add-btn {
+    .add-btn, .reset-btn {
       font-size: 0.875rem;
       padding: 0.5rem 1rem;
+      margin: 0.25rem;
     }
     h1 {
       font-size: 1.5rem; /* Smaller header for mobile */
@@ -166,6 +167,7 @@
       </table>
       <div class="add-btn-container">
         <button class="btn btn-primary add-btn" onclick="addRow()">Add New Row</button>
+        <button class="btn btn-danger reset-btn" onclick="resetTable()">Reset</button>
       </div>
     </div>
   </main>
@@ -238,6 +240,14 @@
       `;
       tbody.appendChild(tr);
       saveTableData();
+    }
+
+    // Reset table
+    function resetTable() {
+      if (confirm('Are you sure you want to reset the table? This will delete all data.')) {
+        tbody.innerHTML = '';
+        localStorage.removeItem('tableData');
+      }
     }
 
     // Check for empty Want field and delete row
