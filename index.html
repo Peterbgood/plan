@@ -25,7 +25,7 @@
     }
     /* Optimize for small screens */
     th, td {
-      font-size: 0.7rem; /* Slightly smaller text for iPhone */
+      font-size: 0.7rem; /* Small text for iPhone */
       padding: 0.25rem; /* Reduced padding */
       min-width: 90px; /* Tighter column width */
       word-wrap: break-word; /* Allow text to wrap */
@@ -202,9 +202,9 @@
       const data = rows.map((row) => {
         const cells = row.querySelectorAll('td');
         return {
-          want: cells[0].textContent,
-          plan: cells[1].textContent,
-          barriers: cells[2].textContent
+          want: cells[0].textContent.trim(),
+          plan: cells[1].textContent.trim(),
+          barriers: cells[2].textContent.trim()
         };
       });
       localStorage.setItem('tableData', JSON.stringify(data));
@@ -238,6 +238,15 @@
       `;
       tbody.appendChild(tr);
       saveTableData();
+    }
+
+    // Check for empty Want field and delete row
+    function checkEmptyWant(cell) {
+      if (cell.textContent.trim() === '') {
+        const row = cell.closest('tr');
+        row.remove();
+        saveTableData();
+      }
     }
 
     // Handle double-tap and long press on mobile
@@ -274,9 +283,12 @@
       }
     });
 
-    // Save changes on input
+    // Handle input to check for empty Want field
     tbody.addEventListener('input', (e) => {
       if (e.target.tagName === 'TD' && e.target.isContentEditable) {
+        if (e.target.cellIndex === 0) { // Want column
+          checkEmptyWant(e.target);
+        }
         saveTableData();
       }
     });
