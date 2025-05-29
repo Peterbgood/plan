@@ -95,6 +95,9 @@
     .color-red {
       background-color: rgba(220, 53, 69, 0.2); /* Light red for hard */
     }
+    .color-darkred {
+      background-color: rgba(139, 0, 0, 0.2); /* Dark red for extremely hard */
+    }
     .color-orange {
       background-color: rgba(253, 126, 20, 0.2); /* Light orange for semi hard */
     }
@@ -110,10 +113,13 @@
       background-color: transparent; /* Default for 'none' */
     }
     .color-square.red {
-      background-color: rgba(220, 53, 69, 0.5);
+      background-color: pink;
+    }
+    .color-square.darkred {
+      background-color: red;
     }
     .color-square.orange {
-      background-color: rgba(253, 126, 20, 0.5);
+      background-color: yellow;
     }
     .color-square.green {
       background-color: rgba(40, 167, 69, 0.5);
@@ -179,7 +185,7 @@
         const color = row.dataset.color || 'none';
         const cells = row.querySelectorAll('td');
         cells.forEach(cell => {
-          cell.classList.remove('color-red', 'color-orange', 'color-green');
+          cell.classList.remove('color-red', 'color-darkred', 'color-orange', 'color-green');
           if (color !== 'none') {
             cell.classList.add(`color-${color}`);
           }
@@ -187,7 +193,7 @@
         // Update color square
         const square = row.querySelector('.color-square');
         if (square) {
-          square.classList.remove('red', 'orange', 'green');
+          square.classList.remove('red', 'darkred', 'orange', 'green');
           if (color !== 'none') {
             square.classList.add(color);
           }
@@ -199,13 +205,13 @@
     function toggleRowColor(div) {
       const row = div.closest('tr');
       const currentColor = row.dataset.color || 'none';
-      const colors = ['none', 'green', 'orange', 'red'];
+      const colors = ['none', 'green', 'orange', 'red', 'darkred'];
       const nextIndex = (colors.indexOf(currentColor) + 1) % colors.length;
       row.dataset.color = colors[nextIndex];
       setRowColors();
       saveTableData();
       // Update title attribute for difficulty
-      div.title = colors[nextIndex] === 'red' ? 'Hard' : colors[nextIndex] === 'orange' ? 'Semi Hard' : colors[nextIndex] === 'green' ? 'Easy' : 'None';
+      div.title = colors[nextIndex] === 'darkred' ? 'Extremely Hard' : colors[nextIndex] === 'red' ? 'Hard' : colors[nextIndex] === 'orange' ? 'Semi Hard' : colors[nextIndex] === 'green' ? 'Easy' : 'None';
     }
 
     // Load data from local storage on page load
@@ -220,7 +226,7 @@
           <td contenteditable="true">${row.want}</td>
           <td contenteditable="true">${row.plan}</td>
           <td contenteditable="true">${row.barriers}</td>
-          <td><div class="color-square ${row.color || ''}" onclick="toggleRowColor(this)" title="${row.color === 'red' ? 'Hard' : row.color === 'orange' ? 'Semi Hard' : row.color === 'green' ? 'Easy' : 'None'}"></div></td>
+          <td><div class="color-square ${row.color || ''}" onclick="toggleRowColor(this)" title="${row.color === 'darkred' ? 'Extremely Hard' : row.color === 'red' ? 'Hard' : row.color === 'orange' ? 'Semi Hard' : row.color === 'green' ? 'Easy' : 'None'}"></div></td>
           <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
         `;
         tbody.appendChild(tr);
@@ -281,7 +287,7 @@
             <td contenteditable="true">${row.want}</td>
             <td contenteditable="true">${row.plan}</td>
             <td contenteditable="true">${row.barriers}</td>
-            <td><div class="color-square ${row.color || ''}" onclick="toggleRowColor(this)" title="${row.color === 'red' ? 'Hard' : row.color === 'orange' ? 'Semi Hard' : row.color === 'green' ? 'Easy' : 'None'}"></div></td>
+            <td><div class="color-square ${row.color || ''}" onclick="toggleRowColor(this)" title="${row.color === 'darkred' ? 'Extremely Hard' : row.color === 'red' ? 'Hard' : row.color === 'orange' ? 'Semi Hard' : row.color === 'green' ? 'Easy' : 'None'}"></div></td>
             <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           `;
           tbody.appendChild(tr);
