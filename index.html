@@ -6,6 +6,8 @@
   <title>Want and Plan Table</title>
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- Bootstrap Icons CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
       background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
@@ -26,9 +28,14 @@
     /* Optimize for small screens */
     th, td {
       font-size: 0.7rem; /* Small text for iPhone */
-      padding: 0.25rem; /* Reduced padding */
+      padding: 0.25rem; /* Uniform padding */
       min-width: 90px; /* Tighter column width */
       word-wrap: break-word; /* Allow text to wrap */
+      vertical-align: middle; /* Center vertically */
+      line-height: 1; /* Consistent line height */
+    }
+    th {
+      padding: 0.25rem; /* Ensure uniform padding for headers */
     }
     th:nth-child(1), td:nth-child(1) { /* Want column */
       min-width: 90px;
@@ -45,7 +52,7 @@
     th:nth-child(4), td:nth-child(4) { /* Up column */
       min-width: 30px;
       width: 30px;
-      padding: 0.1rem; /* Minimal padding */
+      padding: 0.1rem; /* Minimal padding for cells */
       text-align: center;
     }
     .add-btn, .reset-btn {
@@ -69,9 +76,21 @@
       table-layout: fixed; /* Distribute column widths evenly */
     }
     .btn-up {
-      padding: .5rem .2rem; /* Extra small padding */
-      font-size: 0.6rem; /* Smaller font */
+      font-size: 0.8rem; /* Small icon size */
       line-height: 1; /* Tight line height */
+      border-radius: 50%; /* Circular shape */
+      width: 20px; /* Fixed size */
+      height: 20px; /* Fixed size */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0; /* No padding */
+      background-color: #0d6efd; /* Bootstrap primary */
+      color: white; /* Icon color */
+      border: none; /* No border */
+    }
+    .btn-up:hover {
+      background-color: #0b5ed7; /* Darker on hover */
     }
   </style>
 </head>
@@ -95,97 +114,97 @@
             <td contenteditable="true">PAW</td>
             <td contenteditable="true">Office</td>
             <td contenteditable="true">Time constraints</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Project</td>
             <td contenteditable="true">Finding a project</td>
             <td contenteditable="true">Lack of resources</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Pickup Sport</td>
             <td contenteditable="true">Move w/ Trish</td>
             <td contenteditable="true">Scheduling conflicts</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Pos. Visualization</td>
             <td contenteditable="true">Free time</td>
             <td contenteditable="true">Distractions</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Drinking</td>
             <td contenteditable="true">Weekends, Corona</td>
             <td contenteditable="true">Health concerns</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Meet People</td>
             <td contenteditable="true">Office</td>
             <td contenteditable="true">Shyness</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Chat with Mates</td>
             <td contenteditable="true">Office</td>
             <td contenteditable="true">Busy schedules</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Praise</td>
             <td contenteditable="true">Working hard</td>
             <td contenteditable="true">Lack of feedback</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">S</td>
             <td contenteditable="true">Wait</td>
             <td contenteditable="true">Uncertainty</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Research</td>
             <td contenteditable="true">Take notes</td>
             <td contenteditable="true">Information overload</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Flow Work</td>
             <td contenteditable="true">Troubleshooting</td>
             <td contenteditable="true">Technical issues</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Growth</td>
             <td contenteditable="true">Build Stuff</td>
             <td contenteditable="true">Skill gaps</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Problem Solve</td>
             <td contenteditable="true">Work</td>
             <td contenteditable="true">Complexity</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Complete Task</td>
             <td contenteditable="true">Work</td>
             <td contenteditable="true">Interruptions</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">150 pounds</td>
             <td contenteditable="true">Diet</td>
             <td contenteditable="true">Cravings</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
           <tr>
             <td contenteditable="true">Limit and reward</td>
             <td contenteditable="true">Awareness</td>
             <td contenteditable="true">Lack of discipline</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           </tr>
         </tbody>
       </table>
@@ -234,7 +253,7 @@
             <td contenteditable="true">${row.want}</td>
             <td contenteditable="true">${row.plan}</td>
             <td contenteditable="true">${row.barriers}</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           `;
           tbody.appendChild(tr);
         });
@@ -274,7 +293,7 @@
         <td contenteditable="true">New Want</td>
         <td contenteditable="true">Enter plan</td>
         <td contenteditable="true">Enter barriers</td>
-        <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+        <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
       `;
       tbody.appendChild(tr);
       saveTableData();
@@ -290,7 +309,7 @@
             <td contenteditable="true">${row.want}</td>
             <td contenteditable="true">${row.plan}</td>
             <td contenteditable="true">${row.barriers}</td>
-            <td><button class="btn btn-primary btn-up" onclick="moveRowUp(this.closest('tr'))">Up</button></td>
+            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           `;
           tbody.appendChild(tr);
         });
