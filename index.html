@@ -132,7 +132,7 @@
       background-color: red;
     }
     .color-square.orange {
-      background-color: yellow;
+      background-color: #fff3cd;
     }
     .color-square.green {
       background-color: #d4edda;
@@ -210,7 +210,7 @@
         box-sizing: border-box;
         border-radius: 4px;
       }
-  .btn-up {
+      .btn-up {
         width: 100%;
         height: 32px;
         margin: 0;
@@ -296,7 +296,57 @@
       { want: "Limit and reward", plan: "Awareness", barriers: "Lack of discipline", nextStep: "Track daily habits", color: "orange" }
     ];
 
-    // Apply color to all cells in the row
+    // Color mappings to RGB (matching CSS classes)
+    const colorMap = {
+      'red': [255, 229, 229], // #ffe5e5
+      'darkred': [255, 0, 0], // #ffcccc
+      'orange': [255, 243, 205], // #fff3cd
+      'green': [212, 237, 218], // #d4edda
+      'none': null
+    };
+
+    // Update background color based on row colors
+    function updateBackgroundColor() {
+      const rows = tbody.querySelectorAll('tr');
+      const colors = Array.from(rows)
+        .map(row => row.dataset.color || 'none')
+        .filter(color => color !== 'none' && colorMap[color]);
+
+      if (colors.length === 0) {
+        // No rows or all 'none', revert to default gradient
+        document.body.style.background = 'linear-gradient(135deg, #f0f4f8, #d9e2ec)';
+        return;
+      }
+
+      // Check if all colors are the same
+      const uniqueColors = [...new Set(colors)];
+      if (uniqueColors.length === 1) {
+        // All rows have the same color, use it directly
+        const [r, g, b] = colorMap[uniqueColors[0]];
+        document.body.style.background = `linear-gradient(135deg, rgb(${r}, ${g}, ${b}), rgb(${Math.max(r - 20, 0)}, ${Math.max(g - 20, 0)}, ${Math.max(b - 20, 0)}))`;
+        return;
+      }
+
+      // Calculate average RGB for different colors
+      let totalR = 0, totalG = 0, totalB = 0;
+      let count = colors.length;
+
+      colors.forEach(color => {
+        const [r, g, b] = colorMap[color];
+        totalR += r;
+        totalG += g;
+        totalB += b;
+      });
+
+      const avgR = Math.round(totalR / count);
+      const avgG = Math.round(totalG / count);
+      const avgB = Math.round(totalB / count);
+
+      // Apply gradient with the averaged color
+      document.body.style.background = `linear-gradient(135deg, rgb(${avgR}, ${avgG}, ${avgB}), rgb(${Math.max(avgR - 20, 0)}, ${Math.max(avgG - 20, 0)}, ${Math.max(avgB - 20, 0)}))`;
+    }
+
+    // Apply color to all cells in the row and update background
     function setRowColors() {
       const rows = tbody.querySelectorAll('tr');
       rows.forEach((row) => {
@@ -316,6 +366,7 @@
           }
         }
       });
+      updateBackgroundColor();
     }
 
     // Cycle through colors when square is clicked
@@ -370,6 +421,7 @@
         };
       });
       localStorage.setItem('tableData', JSON.stringify(data));
+      updateBackgroundColor();
     }
 
     // Move row up
