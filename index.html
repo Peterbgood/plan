@@ -4,14 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Want and Plan Table</title>
-  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <!-- Bootstrap Icons CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
       background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-      touch-action: manipulation; /* Prevent zoom on touch */
+      touch-action: manipulation;
     }
     .table-container {
       max-width: 100%;
@@ -25,21 +23,20 @@
       outline: 2px solid #0d6efd;
       background-color: #fff;
     }
-    /* Optimize for small screens */
     th, td {
-      font-size: 0.7rem; /* Small text for iPhone */
-      padding: 0.25rem; /* Uniform padding */
-      min-width: 90px; /* Tighter column width */
-      word-wrap: break-word; /* Allow text to wrap */
-      vertical-align: middle; /* Center vertically */
-      line-height: 1; /* Consistent line height */
+      font-size: 0.7rem;
+      padding: 0.25rem;
+      min-width: 90px;
+      word-wrap: break-word;
+      vertical-align: middle;
+      line-height: 1;
     }
     th {
-      padding: 0.25rem; /* Ensure uniform padding for headers */
+      padding: 0.25rem;
     }
     th:nth-child(1), td:nth-child(1) { /* Want column */
       min-width: 90px;
-      max-width: 110px; /* Tighter to fit */
+      max-width: 110px;
     }
     th:nth-child(2), td:nth-child(2) { /* Plan column */
       min-width: 90px;
@@ -49,10 +46,16 @@
       min-width: 90px;
       max-width: 110px;
     }
-    th:nth-child(4), td:nth-child(4) { /* Up column */
+    th:nth-child(4), td:nth-child(4) { /* Difficulty column */
       min-width: 30px;
       width: 30px;
-      padding: 0.1rem; /* Minimal padding for cells */
+      padding: 0.1rem;
+      text-align: center;
+    }
+    th:nth-child(5), td:nth-child(5) { /* Up column */
+      min-width: 30px;
+      width: 30px;
+      padding: 0.1rem;
       text-align: center;
     }
     .add-btn, .reset-btn {
@@ -61,7 +64,7 @@
       margin: 0.25rem;
     }
     h1 {
-      font-size: 1.5rem; /* Smaller header for mobile */
+      font-size: 1.5rem;
     }
     header {
       padding: 1rem;
@@ -70,26 +73,51 @@
       text-align: center;
       margin-top: 0.5rem;
     }
-    /* Ensure table fits without horizontal scroll */
     table {
       width: 100%;
-      table-layout: fixed; /* Distribute column widths evenly */
+      table-layout: fixed;
     }
     .btn-up {
-      font-size: 0.8rem; /* Small icon size */
-      line-height: 1; /* Tight line height */
-      border-radius: 50%; /* Circular shape */
-      width: 20px; /* Fixed size */
-      height: 20px; /* Fixed size */
+      font-size: 0.8rem;
+      line-height: 1;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0; /* No padding */
-      background-color: #fff; /* Bootstrap primary */
-      color: #0d6efd; /* Icon color */
-      border: none; /* No border */
+      padding: 0;
+      background-color: #fff;
+      color: #0d6efd;
+      border: none;
     }
-  
+    /* Color classes for cells */
+    .color-red {
+      background-color: rgba(220, 53, 69, 0.2); /* Light red for hard */
+    }
+    .color-orange {
+      background-color: rgba(253, 126, 20, 0.2); /* Light orange for semi hard */
+    }
+    .color-green {
+      background-color: rgba(40, 167, 69, 0.2); /* Light green for easy */
+    }
+    .color-square {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      display: inline-block;
+      background-color: transparent; /* Default for 'none' */
+    }
+    .color-square.red {
+      background-color: rgba(220, 53, 69, 0.5);
+    }
+    .color-square.orange {
+      background-color: rgba(253, 126, 20, 0.5);
+    }
+    .color-square.green {
+      background-color: rgba(40, 167, 69, 0.5);
+    }
   </style>
 </head>
 <body>
@@ -104,106 +132,12 @@
             <th>Want</th>
             <th>Plan</th>
             <th>Barriers</th>
+            <th>Dif</th>
             <th>Up</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td contenteditable="true">PAW</td>
-            <td contenteditable="true">Office</td>
-            <td contenteditable="true">Time constraints</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Project</td>
-            <td contenteditable="true">Finding a project</td>
-            <td contenteditable="true">Lack of resources</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Pickup Sport</td>
-            <td contenteditable="true">Move w/ Trish</td>
-            <td contenteditable="true">Scheduling conflicts</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Pos. Visualization</td>
-            <td contenteditable="true">Free time</td>
-            <td contenteditable="true">Distractions</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Drinking</td>
-            <td contenteditable="true">Weekends, Corona</td>
-            <td contenteditable="true">Health concerns</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Meet People</td>
-            <td contenteditable="true">Office</td>
-            <td contenteditable="true">Shyness</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Chat with Mates</td>
-            <td contenteditable="true">Office</td>
-            <td contenteditable="true">Busy schedules</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Praise</td>
-            <td contenteditable="true">Working hard</td>
-            <td contenteditable="true">Lack of feedback</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">S</td>
-            <td contenteditable="true">Wait</td>
-            <td contenteditable="true">Uncertainty</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Research</td>
-            <td contenteditable="true">Take notes</td>
-            <td contenteditable="true">Information overload</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Flow Work</td>
-            <td contenteditable="true">Troubleshooting</td>
-            <td contenteditable="true">Technical issues</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Growth</td>
-            <td contenteditable="true">Build Stuff</td>
-            <td contenteditable="true">Skill gaps</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Problem Solve</td>
-            <td contenteditable="true">Work</td>
-            <td contenteditable="true">Complexity</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Complete Task</td>
-            <td contenteditable="true">Work</td>
-            <td contenteditable="true">Interruptions</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">150 pounds</td>
-            <td contenteditable="true">Diet</td>
-            <td contenteditable="true">Cravings</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true">Limit and reward</td>
-            <td contenteditable="true">Awareness</td>
-            <td contenteditable="true">Lack of discipline</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          </tr>
+          <!-- Rows will be populated by JavaScript -->
         </tbody>
       </table>
       <div class="add-btn-container">
@@ -212,7 +146,6 @@
       </div>
     </div>
   </main>
-  <!-- Bootstrap 5 JS (with Popper.js) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script>
     const table = document.getElementById('dataTable');
@@ -221,43 +154,78 @@
 
     // Default table data
     const defaultData = [
-      { want: "PAW", plan: "Office", barriers: "Time constraints" },
-      { want: "Project", plan: "Finding a project", barriers: "Lack of resources" },
-      { want: "Pickup Sport", plan: "Move w/ Trish", barriers: "Scheduling conflicts" },
-      { want: "Pos. Visualization", plan: "Free time", barriers: "Distractions" },
-      { want: "Drinking", plan: "Weekends, Corona", barriers: "Health concerns" },
-      { want: "Meet People", plan: "Office", barriers: "Shyness" },
-      { want: "Chat with Mates", plan: "Office", barriers: "Busy schedules" },
-      { want: "Praise", plan: "Working hard", barriers: "Lack of feedback" },
-      { want: "S", plan: "Wait", barriers: "Uncertainty" },
-      { want: "Research", plan: "Take notes", barriers: "Information overload" },
-      { want: "Flow Work", plan: "Troubleshooting", barriers: "Technical issues" },
-      { want: "Growth", plan: "Build Stuff", barriers: "Skill gaps" },
-      { want: "Problem Solve", plan: "Work", barriers: "Complexity" },
-      { want: "Complete Task", plan: "Work", barriers: "Interruptions" },
-      { want: "150 pounds", plan: "Diet", barriers: "Cravings" },
-      { want: "Limit and reward", plan: "Awareness", barriers: "Lack of discipline" }
+      { want: "PAW", plan: "Office", barriers: "Finding ideal office job", color: "red" },
+      { want: "Project", plan: "Finding a project", barriers: "Lack of resources", color: "red" },
+      { want: "Pickup Sport", plan: "Move", barriers: "T", color: "red" },
+      { want: "Pos. Visualization", plan: "Free time", barriers: "Distractions", color: "green" },
+      { want: "Drinking", plan: "Weekends, Corona", barriers: "kids plan", color: "green" },
+      { want: "Meet People", plan: "Office", barriers: "Finding ideal office job", color: "red" },
+      { want: "Chat with Mates", plan: "Office", barriers: "Finding ideal office job", color: "red" },
+      { want: "Praise", plan: "Working hard", barriers: "Laziness", color: "orange" },
+      { want: "S", plan: "Wait", barriers: "none", color: "green" },
+      { want: "Research", plan: "Take notes that peek my interest", barriers: "just not writing stuff down", color: "green" },
+      { want: "Flow Work", plan: "Troubleshooting", barriers: "Technical issues", color: "red" },
+      { want: "Growth", plan: "Build Stuff", barriers: "T, Laziness", color: "green" },
+      { want: "Problem Solve", plan: "Work", barriers: "None", color: "green" },
+      { want: "Complete Task", plan: "Work", barriers: "Laziness", color: "green" },
+      { want: "150 pounds", plan: "Diet", barriers: "Laziness", color: "red" },
+      { want: "Limit and reward", plan: "Awareness", barriers: "Lack of discipline", color: "orange" }
     ];
+
+    // Apply color to all cells in the row
+    function setRowColors() {
+      const rows = tbody.querySelectorAll('tr');
+      rows.forEach((row) => {
+        const color = row.dataset.color || 'none';
+        const cells = row.querySelectorAll('td');
+        cells.forEach(cell => {
+          cell.classList.remove('color-red', 'color-orange', 'color-green');
+          if (color !== 'none') {
+            cell.classList.add(`color-${color}`);
+          }
+        });
+        // Update color square
+        const square = row.querySelector('.color-square');
+        if (square) {
+          square.classList.remove('red', 'orange', 'green');
+          if (color !== 'none') {
+            square.classList.add(color);
+          }
+        }
+      });
+    }
+
+    // Cycle through colors when square is clicked
+    function toggleRowColor(div) {
+      const row = div.closest('tr');
+      const currentColor = row.dataset.color || 'none';
+      const colors = ['none', 'green', 'orange', 'red'];
+      const nextIndex = (colors.indexOf(currentColor) + 1) % colors.length;
+      row.dataset.color = colors[nextIndex];
+      setRowColors();
+      saveTableData();
+      // Update title attribute for difficulty
+      div.title = colors[nextIndex] === 'red' ? 'Hard' : colors[nextIndex] === 'orange' ? 'Semi Hard' : colors[nextIndex] === 'green' ? 'Easy' : 'None';
+    }
 
     // Load data from local storage on page load
     function loadTableData() {
       const savedData = localStorage.getItem('tableData');
-      if (savedData) {
-        const data = JSON.parse(savedData);
-        tbody.innerHTML = '';
-        data.forEach((row) => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td contenteditable="true">${row.want}</td>
-            <td contenteditable="true">${row.plan}</td>
-            <td contenteditable="true">${row.barriers}</td>
-            <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
-          `;
-          tbody.appendChild(tr);
-        });
-      } else {
-        resetTable(); // Load default data if no saved data
-      }
+      tbody.innerHTML = '';
+      const data = savedData ? JSON.parse(savedData) : defaultData;
+      data.forEach((row) => {
+        const tr = document.createElement('tr');
+        tr.dataset.color = row.color || 'none';
+        tr.innerHTML = `
+          <td contenteditable="true">${row.want}</td>
+          <td contenteditable="true">${row.plan}</td>
+          <td contenteditable="true">${row.barriers}</td>
+          <td><div class="color-square ${row.color || ''}" onclick="toggleRowColor(this)" title="${row.color === 'red' ? 'Hard' : row.color === 'orange' ? 'Semi Hard' : row.color === 'green' ? 'Easy' : 'None'}"></div></td>
+          <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      setRowColors();
     }
 
     // Save data to local storage
@@ -268,7 +236,8 @@
         return {
           want: cells[0].textContent.trim(),
           plan: cells[1].textContent.trim(),
-          barriers: cells[2].textContent.trim()
+          barriers: cells[2].textContent.trim(),
+          color: row.dataset.color || 'none'
         };
       });
       localStorage.setItem('tableData', JSON.stringify(data));
@@ -281,20 +250,24 @@
       if (index > 0) {
         tbody.insertBefore(row, rows[index - 1]);
         saveTableData();
+        setRowColors();
       }
     }
 
     // Add new row
     function addRow() {
       const tr = document.createElement('tr');
+      tr.dataset.color = 'none';
       tr.innerHTML = `
         <td contenteditable="true">New Want</td>
         <td contenteditable="true">Enter plan</td>
         <td contenteditable="true">Enter barriers</td>
+        <td><div class="color-square" onclick="toggleRowColor(this)" title="None"></div></td>
         <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
       `;
       tbody.appendChild(tr);
       saveTableData();
+      setRowColors();
     }
 
     // Reset table to default placeholders
@@ -303,15 +276,18 @@
         tbody.innerHTML = '';
         defaultData.forEach((row) => {
           const tr = document.createElement('tr');
+          tr.dataset.color = row.color;
           tr.innerHTML = `
             <td contenteditable="true">${row.want}</td>
             <td contenteditable="true">${row.plan}</td>
             <td contenteditable="true">${row.barriers}</td>
+            <td><div class="color-square ${row.color || ''}" onclick="toggleRowColor(this)" title="${row.color === 'red' ? 'Hard' : row.color === 'orange' ? 'Semi Hard' : row.color === 'green' ? 'Easy' : 'None'}"></div></td>
             <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           `;
           tbody.appendChild(tr);
         });
         localStorage.setItem('tableData', JSON.stringify(defaultData));
+        setRowColors();
       }
     }
 
@@ -321,43 +297,38 @@
         const row = cell.closest('tr');
         row.remove();
         saveTableData();
+        setRowColors();
       }
     }
 
     // Handle double-tap on mobile
     tbody.addEventListener('touchend', (e) => {
       const row = e.target.closest('tr');
-      if (!row || e.target.closest('.btn-up')) return; // Ignore button clicks
-
+      if (!row || e.target.closest('.btn-up') || e.target.classList.contains('color-square')) return;
       const currentTime = Date.now();
       const timeSinceLastTap = currentTime - lastTapTime;
-
-      if (timeSinceLastTap < 300 && timeSinceLastTap > 0) { // Double-tap: <300ms
-        e.preventDefault(); // Prevent zoom on double-tap
+      if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+        e.preventDefault();
         moveRowUp(row);
       }
-
       lastTapTime = currentTime;
     });
 
     // Handle double-click for desktop
     tbody.addEventListener('dblclick', (e) => {
-      if (e.target.closest('.btn-up')) return; // Ignore button clicks
+      if (e.target.closest('.btn-up') || e.target.classList.contains('color-square')) return;
       const row = e.target.closest('tr');
       if (row) {
         moveRowUp(row);
       }
     });
 
-    // Handle input to check for empty Want field
-    tbody.addEventListener('input', (e) => {
-      if (e.target.tagName === 'TD' && e.target.isContentEditable) {
-        if (e.target.cellIndex === 0) { // Want column
-          checkEmptyWant(e.target);
-        }
-        saveTableData();
+    // Handle input for empty Want
+    tbody.addEventListener('blur', (e) => {
+      if (e.target.tagName === 'TD' && e.target.isContentEditable && e.target.cellIndex === 0) {
+        checkEmptyWant(e.target);
       }
-    });
+    }, true);
 
     // Load saved data on page load
     window.addEventListener('load', loadTableData);
