@@ -163,7 +163,7 @@
     const tbody = table.querySelector('tbody');
     let lastTapTime = 0;
 
-    // Default table data
+    // Default table data with ensured nextStep field
     const defaultData = [
       { want: "PAW", plan: "Office", barriers: "Finding ideal office job", nextStep: "Leaving current job", color: "red" },
       { want: "Project", plan: "Finding a project", barriers: "Lack of resources", nextStep: "Identify funding sources", color: "red" },
@@ -197,7 +197,6 @@
             cell.classList.add(`color-${color}`);
           }
         });
-        // Update color square
         const square = row.querySelector('.color-square');
         if (square) {
           square.classList.remove('red', 'darkred', 'orange', 'green');
@@ -217,7 +216,6 @@
       row.dataset.color = colors[nextIndex];
       setRowColors();
       saveTableData();
-      // Update title attribute for difficulty
       div.title = colors[nextIndex] === 'darkred' ? 'Extremely Hard' : colors[nextIndex] === 'red' ? 'Hard' : colors[nextIndex] === 'orange' ? 'Semi Hard' : colors[nextIndex] === 'green' ? 'Easy' : 'None';
     }
 
@@ -227,14 +225,20 @@
       tbody.innerHTML = '';
       const data = savedData ? JSON.parse(savedData) : defaultData;
       data.forEach((row) => {
+        // Ensure all fields are strings, even if undefined or null
+        const want = row.want !== undefined ? String(row.want) : '';
+        const plan = row.plan !== undefined ? String(row.plan) : '';
+        const barriers = row.barriers !== undefined ? String(row.barriers) : '';
+        const nextStep = row.nextStep !== undefined ? String(row.nextStep) : '';
+        const color = row.color || 'none';
         const tr = document.createElement('tr');
-        tr.dataset.color = row.color || 'none';
+        tr.dataset.color = color;
         tr.innerHTML = `
-          <td contenteditable="true">${row.want}</td>
-          <td contenteditable="true">${row.plan}</td>
-          <td contenteditable="true">${row.barriers}</td>
-          <td contenteditable="true">${row.nextStep || ''}</td>
-          <td><div class="color-square ${row.color || ''}" onclick="toggleRowColor(this)" title="${row.color === 'darkred' ? 'Extremely Hard' : row.color === 'red' ? 'Hard' : row.color === 'orange' ? 'Semi Hard' : row.color === 'green' ? 'Easy' : 'None'}"></div></td>
+          <td contenteditable="true">${want}</td>
+          <td contenteditable="true">${plan}</td>
+          <td contenteditable="true">${barriers}</td>
+          <td contenteditable="true">${nextStep}</td>
+          <td><div class="color-square ${color}" onclick="toggleRowColor(this)" title="${color === 'darkred' ? 'Extremely Hard' : color === 'red' ? 'Hard' : color === 'orange' ? 'Semi Hard' : color === 'green' ? 'Easy' : 'None'}"></div></td>
           <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
         `;
         tbody.appendChild(tr);
@@ -291,14 +295,19 @@
       if (confirm('Are you sure you want to reset the table to default placeholders?')) {
         tbody.innerHTML = '';
         defaultData.forEach((row) => {
+          const want = row.want !== undefined ? String(row.want) : '';
+          const plan = row.plan !== undefined ? String(row.plan) : '';
+          const barriers = row.barriers !== undefined ? String(row.barriers) : '';
+          const nextStep = row.nextStep !== undefined ? String(row.nextStep) : '';
+          const color = row.color || 'none';
           const tr = document.createElement('tr');
-          tr.dataset.color = row.color;
+          tr.dataset.color = color;
           tr.innerHTML = `
-            <td contenteditable="true">${row.want}</td>
-            <td contenteditable="true">${row.plan}</td>
-            <td contenteditable="true">${row.barriers}</td>
-            <td contenteditable="true">${row.nextStep || ''}</td>
-            <td><div class="color-square ${row.color || ''}" onclick="toggleRowColor(this)" title="${row.color === 'darkred' ? 'Extremely Hard' : row.color === 'red' ? 'Hard' : row.color === 'orange' ? 'Semi Hard' : row.color === 'green' ? 'Easy' : 'None'}"></div></td>
+            <td contenteditable="true">${want}</td>
+            <td contenteditable="true">${plan}</td>
+            <td contenteditable="true">${barriers}</td>
+            <td contenteditable="true">${nextStep}</td>
+            <td><div class="color-square ${color}" onclick="toggleRowColor(this)" title="${color === 'darkred' ? 'Extremely Hard' : color === 'red' ? 'Hard' : color === 'orange' ? 'Semi Hard' : color === 'green' ? 'Easy' : 'None'}"></div></td>
             <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           `;
           tbody.appendChild(tr);
@@ -340,10 +349,13 @@
       }
     });
 
-    // Handle input for empty Want
+    // Handle input for empty Want and save changes
     tbody.addEventListener('blur', (e) => {
-      if (e.target.tagName === 'TD' && e.target.isContentEditable && e.target.cellIndex === 0) {
-        checkEmptyWant(e.target);
+      if (e.target.tagName === 'TD' && e.target.isContentEditable) {
+        if (e.target.cellIndex === 0) {
+          checkEmptyWant(e.target);
+        }
+        saveTableData();
       }
     }, true);
 
