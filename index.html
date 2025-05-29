@@ -46,13 +46,17 @@
       min-width: 90px;
       max-width: 110px;
     }
-    th:nth-child(4), td:nth-child(4) { /* Difficulty column */
+    th:nth-child(4), td:nth-child(4) { /* Next Step column */
+      min-width: 90px;
+      max-width: 110px;
+    }
+    th:nth-child(5), td:nth-child(5) { /* Difficulty column */
       min-width: 30px;
       width: 30px;
       padding: 0.1rem;
       text-align: center;
     }
-    th:nth-child(5), td:nth-child(5) { /* Up column */
+    th:nth-child(6), td:nth-child(6) { /* Up column */
       min-width: 30px;
       width: 30px;
       padding: 0.1rem;
@@ -93,13 +97,13 @@
     }
     /* Color classes for cells */
     .color-red {
-      background-color: rgba(220, 53, 69, 0.2); /* Light red for hard */
+      background-color: pink; /* Light red for hard */
     }
     .color-darkred {
-      background-color: rgba(139, 0, 0, 0.2); /* Dark red for extremely hard */
+      background-color: red; /* Dark red for extremely hard */
     }
     .color-orange {
-      background-color: rgba(253, 126, 20, 0.2); /* Light orange for semi hard */
+      background-color: yellow; /* Light orange for semi hard */
     }
     .color-green {
       background-color: rgba(40, 167, 69, 0.2); /* Light green for easy */
@@ -138,6 +142,7 @@
             <th>Want</th>
             <th>Plan</th>
             <th>Barriers</th>
+            <th>Next Step</th>
             <th>Dif</th>
             <th>Up</th>
           </tr>
@@ -160,22 +165,23 @@
 
     // Default table data
     const defaultData = [
-      { want: "PAW", plan: "Office", barriers: "Finding ideal office job", color: "red" },
-      { want: "Project", plan: "Finding a project", barriers: "Lack of resources", color: "red" },
-      { want: "Pickup Sport", plan: "Move", barriers: "T", color: "red" },
-      { want: "Pos. Visualization", plan: "Free time", barriers: "Distractions", color: "green" },
-      { want: "Drinking", plan: "Weekends, Corona", barriers: "kids plan", color: "green" },
-      { want: "Meet People", plan: "Office", barriers: "Finding ideal office job", color: "red" },
-      { want: "Chat with Mates", plan: "Office", barriers: "Finding ideal office job", color: "red" },
-      { want: "Praise", plan: "Working hard", barriers: "Laziness", color: "orange" },
-      { want: "S", plan: "Wait", barriers: "none", color: "green" },
-      { want: "Research", plan: "Take notes that peek my interest", barriers: "just not writing stuff down", color: "green" },
-      { want: "Flow Work", plan: "Troubleshooting", barriers: "Technical issues", color: "red" },
-      { want: "Growth", plan: "Build Stuff", barriers: "T, Laziness", color: "green" },
-      { want: "Problem Solve", plan: "Work", barriers: "None", color: "green" },
-      { want: "Complete Task", plan: "Work", barriers: "Laziness", color: "green" },
-      { want: "150 pounds", plan: "Diet", barriers: "Laziness", color: "red" },
-      { want: "Limit and reward", plan: "Awareness", barriers: "Lack of discipline", color: "orange" }
+      { want: "PAW", plan: "Office", barriers: "Finding ideal office job", nextStep: "Leaving current job", color: "red" },
+      { want: "Project", plan: "Finding a project", barriers: "Lack of resources", nextStep: "Identify funding sources", color: "red" },
+      { want: "Pickup Sport", plan: "Move", barriers: "T", nextStep: "Research local sports facilities", color: "red" },
+      { want: "Join a Club", plan: "Research local clubs", barriers: "Time constraints", nextStep: "Attend a club meeting", color: "orange" },
+      { want: "Pos. Visualization", plan: "Free time", barriers: "Distractions", nextStep: "Schedule meditation time", color: "green" },
+      { want: "Drinking", plan: "Weekends, Corona", barriers: "kids plan", nextStep: "Plan a social event", color: "green" },
+      { want: "Meet People", plan: "Office", barriers: "Finding ideal office job", nextStep: "Attend networking events", color: "red" },
+      { want: "Chat with Mates", plan: "Office", barriers: "Finding ideal office job", nextStep: "Schedule a catch-up call", color: "red" },
+      { want: "Praise", plan: "Working hard", barriers: "Laziness", nextStep: "Set daily work goals", color: "orange" },
+      { want: "S", plan: "Wait", barriers: "none", nextStep: "Monitor opportunities", color: "green" },
+      { want: "Research", plan: "Take notes that peek my interest", barriers: "just not writing stuff down", nextStep: "Create a note-taking system", color: "green" },
+      { want: "Flow Work", plan: "Troubleshooting", barriers: "Technical issues", nextStep: "Learn new technical skills", color: "red" },
+      { want: "Growth", plan: "Build Stuff", barriers: "T, Laziness", nextStep: "Start a small project", color: "green" },
+      { want: "Problem Solve", plan: "Work", barriers: "None", nextStep: "Tackle a work issue", color: "green" },
+      { want: "Complete Task", plan: "Work", barriers: "Laziness", nextStep: "Break tasks into steps", color: "green" },
+      { want: "150 pounds", plan: "Diet", barriers: "Laziness", nextStep: "Plan weekly meals", color: "red" },
+      { want: "Limit and reward", plan: "Awareness", barriers: "Lack of discipline", nextStep: "Track daily habits", color: "orange" }
     ];
 
     // Apply color to all cells in the row
@@ -226,6 +232,7 @@
           <td contenteditable="true">${row.want}</td>
           <td contenteditable="true">${row.plan}</td>
           <td contenteditable="true">${row.barriers}</td>
+          <td contenteditable="true">${row.nextStep || ''}</td>
           <td><div class="color-square ${row.color || ''}" onclick="toggleRowColor(this)" title="${row.color === 'darkred' ? 'Extremely Hard' : row.color === 'red' ? 'Hard' : row.color === 'orange' ? 'Semi Hard' : row.color === 'green' ? 'Easy' : 'None'}"></div></td>
           <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
         `;
@@ -243,6 +250,7 @@
           want: cells[0].textContent.trim(),
           plan: cells[1].textContent.trim(),
           barriers: cells[2].textContent.trim(),
+          nextStep: cells[3].textContent.trim(),
           color: row.dataset.color || 'none'
         };
       });
@@ -268,6 +276,7 @@
         <td contenteditable="true">New Want</td>
         <td contenteditable="true">Enter plan</td>
         <td contenteditable="true">Enter barriers</td>
+        <td contenteditable="true">Enter next step</td>
         <td><div class="color-square" onclick="toggleRowColor(this)" title="None"></div></td>
         <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
       `;
@@ -287,6 +296,7 @@
             <td contenteditable="true">${row.want}</td>
             <td contenteditable="true">${row.plan}</td>
             <td contenteditable="true">${row.barriers}</td>
+            <td contenteditable="true">${row.nextStep || ''}</td>
             <td><div class="color-square ${row.color || ''}" onclick="toggleRowColor(this)" title="${row.color === 'darkred' ? 'Extremely Hard' : row.color === 'red' ? 'Hard' : row.color === 'orange' ? 'Semi Hard' : row.color === 'green' ? 'Easy' : 'None'}"></div></td>
             <td><button class="btn-up" onclick="moveRowUp(this.closest('tr'))" aria-label="Move row up"><i class="bi bi-arrow-up-circle-fill"></i></button></td>
           `;
