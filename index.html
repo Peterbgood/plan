@@ -103,19 +103,7 @@
     .btn-up:hover {
       background-color: #f8f9fa;
     }
-    /* Color classes for cells */
-    .color-red {
-      background-color: #ffe5e5; /* Softer light red for hard */
-    }
-    .color-darkred {
-      background-color: red !important; /* Softer dark red for extremely hard */
-    }
-    .color-orange {
-      background-color: #fff3cd; /* Softer yellow for semi hard */
-    }
-    .color-green {
-      background-color: #d4edda; /* Softer green for easy */
-    }
+    /* Color classes for difficulty square only */
     .color-square {
       width: 24px;
       height: 24px;
@@ -129,7 +117,7 @@
       background-color: #ffe5e5;
     }
     .color-square.darkred {
-      background-color: red !important;
+      background-color: #dc3545 !important;
     }
     .color-square.orange {
       background-color: #fff3cd;
@@ -296,18 +284,11 @@
       { want: "Limit and reward", plan: "Awareness", barriers: "Lack of discipline", nextStep: "Track daily habits", color: "orange" }
     ];
 
-    // Apply color to all cells in the row
+    // Apply color to the difficulty square only
     function setRowColors() {
       const rows = tbody.querySelectorAll('tr');
       rows.forEach((row) => {
         const color = row.dataset.color || 'none';
-        const cells = row.querySelectorAll('td');
-        cells.forEach(cell => {
-          cell.classList.remove('color-red', 'color-darkred', 'color-orange', 'color-green');
-          if (color !== 'none') {
-            cell.classList.add(`color-${color}`);
-          }
-        });
         const square = row.querySelector('.color-square');
         if (square) {
           square.classList.remove('red', 'darkred', 'orange', 'green');
